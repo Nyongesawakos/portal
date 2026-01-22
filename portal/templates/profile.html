@@ -1,0 +1,45 @@
+{%include 'main.html'%}
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+
+ {%for Student in std%}
+
+    <div class="content">
+  
+
+
+     <div class="card" style="text-align:center">
+    <img src="{% static 'images/avatar.jpg' %}" class="avatar">
+   
+    <p><strong>Name:</strong> {{Student.name}}</p>
+    <p><strong>Registration No:</strong> {{Student.reg_no}}</p>
+    <p><strong>Email:</strong> {{Student.email}}</p>
+    <p><strong>Grade:</strong> {{Student.course}}</p>
+    
+    
+</div>
+  <div class="cards">
+            
+            <div class="card">
+                <h3>School fees paid</h3>
+                <p>{{Student.fee_paid}}</p>
+            </div>
+            <div class="card">
+                <h3>Fee Balance</h3>
+                <p>{{Student.arrears}}</p>
+            </div>
+
+    </div>
+    
+</div>
+{%endfor%}
+</body>
+</html>

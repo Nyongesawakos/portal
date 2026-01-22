@@ -1,0 +1,44 @@
+{%include 'main.html'%}
+{%load static%}
+   {% block content %}
+   
+<head>
+    <title>Excel Upload</title>
+    
+
+
+</head>
+<body>
+
+<!-- Mobile Topbar -->
+
+
+<div class="container">
+
+    <!-- Sidebar -->
+    
+
+        
+
+    <!-- Content -->
+    <div class="content">
+        <h1>Register Manually</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <button type="submit">Save Student</button>
+</form>
+<br>
+<hr>
+<br>
+<h3>Or Upload Excel</h3>
+<form method="post" enctype="multipart/form-data" action="/upload/students/">
+    {% csrf_token %}
+    <input type="file" name="file" required>
+    <button type="submit">Upload Excel</button>
+</form>
+</div>
+</div>
+{%endblock%}
