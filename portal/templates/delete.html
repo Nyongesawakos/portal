@@ -1,0 +1,36 @@
+{%include 'main.html'%}
+
+{% block content %}
+<br>
+<form method="POST" action="" >
+    {% csrf_token %}
+    <br>
+<p style="color: #c0392b;"> Are you Sure you Want to delete Student with reg_no "{{obj}}"?</p><br>
+<a style="text-decoration: none;" href="{{request.META.HTTP_REFERER}}">Go back  [or]</a>
+<input type="submit" value="Confirm" class="btn-confirm">
+
+</form>
+
+{%endblock%}
+<style>
+    .btn-confirm {
+    background: #e74c3c;        /* modern red */
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-confirm:hover {
+    background: #c0392b;
+}
+
+.btn-confirm:active {
+    transform: scale(0.97);
+}
+
+</style>
