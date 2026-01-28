@@ -1,0 +1,100 @@
+{%include 'main.html'%}
+{%load static%}
+   {% block content %}
+<head>
+    <title>Excel Upload</title>
+    
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+</head>
+<body>
+
+<!-- Mobile Topbar -->
+
+
+<div class="container">
+
+    <!-- Sidebar -->
+    
+
+        
+
+    <!-- Content -->
+    <div class="content">
+        <h1>Upload Excel File</h1>
+
+        <div class="card">
+            <input type="file" id="excelFile" accept=".xlsx,.xls">
+            <br><br>
+            <button onclick="readExcel()">Upload & Preview</button>
+            <button onclick="sendExcel('/upload/students/')">Upload Students</button>
+<button onclick="sendExcel('/upload/units/')">Upload Units</button>
+<button onclick="sendExcel('/upload/results/')">Upload Results</button>
+        </div>
+
+        <div class="card" style="overflow-x:auto">
+            <table id="excelTable" border="1" width="100%"></table>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleMenu() {
+    document.querySelector('.sidebar').classList.toggle('active');
+}
+
+function readExcel() {
+    const file = document.getElementById('excelFile').files[0];
+    if (!file) {
+        alert("Please select an Excel file");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        let table = document.getElementById("excelTable");
+        table.innerHTML = "";
+
+        rows.forEach((row, index) => {
+            let tr = document.createElement("tr");
+            row.forEach(cell => {
+                let el = document.createElement(index === 0 ? "th" : "td");
+                el.innerText = cell;
+                tr.appendChild(el);
+            });
+            table.appendChild(tr);
+        });
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+function sendExcel(url) {
+    let file = document.getElementById("excelFile").files[0];
+    let formData = new FormData();
+    formData.append("file", file);
+
+    fetch(url, {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        }
+    })
+    .then(res => res.json())
+    .then(data => alert(JSON.stringify(data)))
+    .catch(err => alert("Upload failed"));
+}
+
+
+</script>
+
+
+
+</body>
+</html>
+{%endblock%}
